@@ -1,0 +1,61 @@
+<html>
+    <script type="text/javascript">
+    var l_g = 0;
+    var l_w = 0;
+    var l_p = 0;
+    var proc_win = 0;
+    function generate()
+        {
+            wybor = Math.round(Math.random());
+        }
+    
+    function check(a)
+        {
+            document.getElementById("wynik").innerHTML = "";
+            if (parseInt(a) == wybor)
+                {
+                document.getElementById("wynik").innerHTML = "Wygrana";
+                document.getElementById("wynik").style = "color:green";
+                document.getElementById("l_w").innerHTML = ++l_w;
+                }
+            else
+                {
+                document.getElementById("wynik").innerHTML = "Przegrana";
+                document.getElementById("wynik").style = "color:red";
+                document.getElementById("l_p").innerHTML = ++l_p;
+                }
+            generate();
+            document.getElementById("l_g").innerHTML = ++l_g;
+            proc_win = (l_w/l_g)*100;
+            document.getElementById("procent").innerHTML = proc_win.toFixed(2)+"%";
+        }
+        generate();
+    </script>
+    <head>
+        <title>Orzeł i reszka</title>
+    </head>
+    <body style="background-color:black">
+        <div style="background-color:lightblue;height:20%;">
+            <center><h1>Orzeł i reszka</h1></center>
+            <center>
+                <table border="1" >
+                    <tr>
+                        <td><p>Liczba gier:</p></td><td><p id="l_g">0</p></td>
+                        <td><p>% win</p><td><p id="procent">0.00%</p></td></td>
+                    </tr>
+                    <tr>
+                        <td><p>Wygrane: </p><td><p id="l_w">0</p></td></td>
+                        <td><p>Przegrane:</p><td><p id="l_p">0</p></td></td>
+                    </tr>
+                </table>
+            </center>
+            <center><h1 id="wynik">Wybierz orła albo reszkę</h1></center>
+        </div>
+        <div>
+            <div>
+                <button onclick="check(0)" style="cursor:pointer;width:50%;height: 50%;float:left">ORZEŁ</button>
+                <button onclick="check(1)" style="cursor:pointer;width:50%;height: 50%;">RESZKA</button>
+            </div>
+        </div>
+    </body>
+</html>
