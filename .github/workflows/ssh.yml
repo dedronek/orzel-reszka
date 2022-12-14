@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v1
 
     - name: SSH command
-      uses: cross-the-world/ssh-pipeline@v1.2.0
+      uses: sindar225/ssh-pipeline@master
       with:
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USERNAME }}
