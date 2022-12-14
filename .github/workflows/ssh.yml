@@ -18,6 +18,7 @@ jobs:
           USER: ${{ secrets.USER }}
           KEY: ${{ secrets.KEY }}
           HOST: ${{ secrets.HOST }}
+          PORT: ${{ secrets.PORT }}
         run: |
           mkdir -p ~/.ssh/
           echo "$KEY" > ~/.ssh/staging.key
@@ -26,6 +27,7 @@ jobs:
           Host mikrus
             HostName $HOST
             User $USER
+            Port $PORT
             IdentityFile ~/.ssh/staging.key
             StrictHostKeyChecking no
           EOF
