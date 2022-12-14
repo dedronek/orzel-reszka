@@ -26,9 +26,9 @@ jobs:
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ${{ secrets.USER }}
-          SSH_KEY: ${{ secrets.KEY }}
-          SSH_HOST: ${{ secrets.HOST }}
+          USER: ${{ secrets.USER }}
+          KEY: ${{ secrets.KEY }}
+          HOST: ${{ secrets.HOST }}
 
       - name: List files
         run: ssh mikrus 'sudo ls -al'
