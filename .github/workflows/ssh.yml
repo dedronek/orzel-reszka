@@ -18,13 +18,13 @@ jobs:
           mkdir -p ~/.ssh/
           echo "$KEY" > ~/.ssh/staging.key
           chmod 600 ~/.ssh/staging.key
-          cat >>~/.ssh/config <<END
+          cat > ~/.ssh/config << EOF
           Host mikrus
             HostName $HOST
             User $USER
             IdentityFile ~/.ssh/staging.key
             StrictHostKeyChecking no
-          END
+          EOF
         env:
           USER: ${{ secrets.USER }}
           KEY: ${{ secrets.KEY }}
