@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     # needs: test
+    environment: mikrus
     env:
         SSH_USER: '${{ secrets.USER }}'
         SSH_KEY: '${{ secrets.KEY }}'
