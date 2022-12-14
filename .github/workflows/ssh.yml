@@ -26,4 +26,4 @@ jobs:
             StrictHostKeyChecking no
           END
       - name: SSH connection
-        run: ssh $SSH_USER@$SSH_HOST -p ${{ secrets.PORT }}
+        run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} -p ${{ secrets.PORT }}
