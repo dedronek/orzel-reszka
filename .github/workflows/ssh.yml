@@ -8,13 +8,13 @@ env:
 jobs:
 
   build:
-    name: Build
+    name: Checkout
     runs-on: ubuntu-latest
     steps:
     - name: checkout
       uses: actions/checkout@v1
 
-    - name: multiple command
+    - name: SSH commands
       uses: cross-the-world/ssh-pipeline@v1.2.0
       with:
         host: ${{ secrets.HOST }}
