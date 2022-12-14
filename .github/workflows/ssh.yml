@@ -25,6 +25,7 @@ jobs:
             IdentityFile ~/.ssh/staging.key
             StrictHostKeyChecking no
           EOF
+          cat ~/.ssh/config
         env:
           USER: ${{ secrets.USER }}
           KEY: ${{ secrets.KEY }}
