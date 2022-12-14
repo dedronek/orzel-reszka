@@ -8,17 +8,26 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     # needs: test
-    environment: mikrus
     env:
-        SSH_USER: '${{ secrets.USER }}'
-        SSH_KEY: '${{ secrets.KEY }}'
-        SSH_HOST: '${{ secrets.HOST }}'
+        SSH_USER: ${{ secrets.USER }}
+        SSH_KEY: ${{ secrets.KEY }}
+        SSH_HOST: ${{ secrets.HOST }}
+        SSH_PORT: ${{ secrets.PORT }}
+    environment: mikrus
     steps:
-      - name: SSH
-        uses: appleboy/ssh-action@master
-        with:
-            host: '${{ secrets.HOST }}'
-            username: '${{ secrets.USERNAME }}'
-            key: '${{ secrets.KEY }}'
-            port: '${{ secrets.PORT }}'
-            script: whoami
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
+          cat >>~/.ssh/config <<END
+          Host staging
+            HostName $SSH_HOST
+            User $SSH_USER
+            Port $SSH_PORT
+            IdentityFile ~/.ssh/staging.key
+            StrictHostKeyChecking no
+          END
+
+      - name: Stop the server
+        run: ssh staging 'ls -al'
