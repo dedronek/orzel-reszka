@@ -1,140 +1,30 @@
-name: remote ssh command
-on: [push]
-
-env:
-  FOO: "FOO"
-  BAR: "BAR"
-
+name: CI
+on: [push, pull_request]
 jobs:
-
+  # test:
+  #   ...
   deploy:
-    name: "Deploy"
+    name: "Deploy to staging"
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     # needs: test
     steps:
       - name: Configure SSH
-        env:
-          USER: ${{ secrets.USER }}
-          KEY: ${{ secrets.KEY }}
-          HOST: ${{ secrets.HOST }}
-          PORT: ${{ secrets.PORT }}
         run: |
           mkdir -p ~/.ssh/
-          echo "$KEY" > ~/.ssh/staging.key
+          echo "$SSH_KEY" > ~/.ssh/staging.key
           chmod 600 ~/.ssh/staging.key
-          cat > ~/.ssh/config << EOF
-          Host mikrus
-            HostName $HOST
-            User $USER
-            Port $PORT
+          cat >>~/.ssh/config <<END
+          Host staging
+            HostName $SSH_HOST
+            User $SSH_USER
             IdentityFile ~/.ssh/staging.key
             StrictHostKeyChecking no
-          EOF
-          cat ~/.ssh/config
-      - name: List files
-        run: ssh mikrus 'sudo ls -al'
+          END
+        env:
+          SSH_USER: ${{ secrets.USER }}
+          SSH_KEY: ${{ secrets.KEY }}
+          SSH_HOST: ${{ secrets.HOST }}
 
-    # - name: stop script if command error
-    #   if: always()
-    #   uses: ./
-    #   with:
-    #     host: ${{ secrets.HOST }}
-    #     username: ${{ secrets.USERNAME }}
-    #     key: ${{ secrets.KEY }}
-    #     port: ${{ secrets.PORT }}
-    #     script_stop: true
-    #     script: |
-    #       mkdir abc/def
-    #       ls -al
-
-#     - name: pass environment
-#       uses: ./
-#       env:
-#         FOO: "BAR"
-#       with:
-#         host: ${{ secrets.HOST }}
-#         username: ${{ secrets.USERNAME }}
-#         key: ${{ secrets.KEY }}
-#         port: ${{ secrets.PORT }}
-#         envs: FOO
-#         script: |
-#           echo "I am $FOO, thanks"
-#           echo "I am $BAR, thanks"
-#     - name: pass multiple environment
-#       uses: ./
-#       env:
-#         FOO: "BAR"
-#         BAR: "FOO"
-#         SHA: ${{ github.sha }}
-#         PORT: ${{ secrets.PORT }}
-#       with:
-#         host: ${{ secrets.HOST }}
-#         username: ${{ secrets.USERNAME }}
-#         key: ${{ secrets.KEY }}
-#         port: ${{ secrets.PORT }}
-#         envs: FOO,BAR,SHA,PORT
-#         script: |
-#           echo "I am $FOO, thanks"
-#           echo "I am $BAR, thanks"
-#           echo "sha: $SHA"
-#           echo "port: $PORT"
-#     - name: ssh key passphrase
-#       uses: ./
-#       with:
-#         host: ${{ secrets.HOST }}
-#         username: ${{ secrets.USERNAME }}
-#         key: ${{ secrets.SSH2 }}
-#         port: ${{ secrets.PORT }}
-#         passphrase: ${{ secrets.PASSPHRASE }}
-#         script: |
-#           whoami
-#           ls -al
-#     - name: use insecure cipher
-#       uses: ./
-#       with:
-#         host: ${{ secrets.HOST }}
-#         username: ${{ secrets.USERNAME }}
-#         password: ${{ secrets.PASSWORD }}
-#         port: ${{ secrets.PORT }}
-#         script: |
-#             ls \
-#               -lah
-#         use_insecure_cipher: true
-
-#     # https://github.com/appleboy/ssh-action/issues/75#issuecomment-668314271
-#     - name: Multiline SSH commands interpreted as single lines
-#       uses: ./
-#       with:
-#         host: ${{ secrets.HOST }}
-#         username: ${{ secrets.USERNAME }}
-#         password: ${{ secrets.PASSWORD }}
-#         port: ${{ secrets.PORT }}
-#         script_stop: true
-#         script: |
-#             ls \
-#               -lah
-#         use_insecure_cipher: true
-
-#     # https://github.com/appleboy/ssh-action/issues/85
-#     - name: Deployment to multiple hosts with different ports
-#       uses: ./
-#       with:
-#         host: "${{ secrets.HOST }}:${{ secrets.PORT }}"
-#         username: ${{ secrets.USERNAME }}
-#         password: ${{ secrets.PASSWORD }}
-#         port: 1024
-#         script_stop: true
-#         script: |
-#             ls \
-#               -lah
-#         use_insecure_cipher: true
-
-#     # - name: SSH ED25519 Private Key
-#     #   uses: ./
-#     #   with:
-#     #     host: ${{ secrets.TUNNEL_HOST }}
-#     #     username: ${{ secrets.TUNNEL_USERNAME }}
-#     #     key: ${{ secrets.ID_ED25519 }}
-#     #     port: ${{ secrets.TUNNEL_PORT }}
-#     #     script: whoami
+      - name: Stop the server
+        run: ssh staging 'sudo ls -al'
