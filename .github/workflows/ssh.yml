@@ -15,14 +15,13 @@ jobs:
       uses: actions/checkout@v1
 
     - name: SSH commands
-      uses: D3rHase/ssh-command-action@v0.2.2
+      uses: ErenKrt/ssh-push@1.0
       with:
-        host: ${{ secrets.HOST }}
-        user: ${{ secrets.USERNAME }}
-        private_key: ${{ secrets.KEY }}
-        port: 22
-        host_fingerprint: 'mUzVbmhf4N+6GbG0P1x9rtELWmBYg+l4D8I7gW5jEXo'
-        command: |
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PRIVATE_KEY: ${{ secrets.KEY }}
+        PORT: ${{ secrets.PORT }}
+        SCRIPTS: |
           whoami
           ls -al
     # - name: stop script if command error
