@@ -25,6 +25,5 @@ jobs:
             IdentityFile ~/.ssh/staging.key
             StrictHostKeyChecking no
           END
-          cat ~/.ssh/staging.key
       - name: SSH connection
-        run: ssh staging 'sudo ls -al'
+        run: ssh $SSH_USER@$SSH_HOST -p ${{ secrets.PORT }}
