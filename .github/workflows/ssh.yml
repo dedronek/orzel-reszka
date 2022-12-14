@@ -20,7 +20,8 @@ jobs:
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USERNAME }}
         private_key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
+        port: 10185
+        host_fingerprint: 'mUzVbmhf4N+6GbG0P1x9rtELWmBYg+l4D8I7gW5jEXo'
         command: |
           whoami
           ls -al
