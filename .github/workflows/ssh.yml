@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     # needs: test
+    env:
+        SSH_USER: ${{ secrets.USER }}
+        SSH_KEY: ${{ secrets.KEY }}
+        SSH_HOST: ${{ secrets.HOST }}
     steps:
       - name: Configure SSH
         run: |
@@ -22,10 +26,5 @@ jobs:
             StrictHostKeyChecking no
           END
           cat ~/.ssh/staging.key
-        env:
-          SSH_USER: ${{ secrets.USER }}
-          SSH_KEY: ${{ secrets.KEY }}
-          SSH_HOST: ${{ secrets.HOST }}
-
-      - name: Stop the server
+      - name: SSH connection
         run: ssh staging 'sudo ls -al'
