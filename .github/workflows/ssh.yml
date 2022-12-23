@@ -13,7 +13,6 @@ jobs:
         SSH_KEY: ${{ secrets.KEY }}
         SSH_HOST: ${{ secrets.HOST }}
         SSH_PORT: ${{ secrets.PORT }}
-        REPO_NAME: ${{ github.repository.name }}
     environment: mikrus
     steps:
       - name: Configure SSH
@@ -34,4 +33,4 @@ jobs:
         run: ssh mikrus 'ls -al'
         
       - name: Pull repo
-        run: ssh mikrus 'mkdir $REPO_NAME'
+        run: ssh mikrus 'mkdir $GITHUB_REPOSITORY'
