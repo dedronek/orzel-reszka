@@ -13,7 +13,8 @@ jobs:
         SSH_KEY: ${{ secrets.KEY }}
         SSH_HOST: ${{ secrets.HOST }}
         SSH_PORT: ${{ secrets.PORT }}
-        REPO: ${{ github.repository }}
+        REPO_NAME: ${{ github.repository }}
+        REPO_URL: ${{ github.repositoryUrl	}}
     environment: mikrus
     steps:
       - name: Configure SSH
@@ -34,4 +35,4 @@ jobs:
         run: ssh mikrus 'ls -al'
         
       - name: Make dir with repo name
-        run: ssh mikrus "mkdir $REPO"
+        run: ssh mikrus "git clone $REPO_URL"
