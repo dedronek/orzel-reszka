@@ -35,4 +35,4 @@ jobs:
         run: ssh mikrus 'ls -al'
         
       - name: Make dir with repo name
-        run: ssh mikrus "git clone $REPO_URL"
+        run: ssh mikrus "git clone https://github.com/$REPO_NAME"
