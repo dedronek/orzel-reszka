@@ -33,5 +33,5 @@ jobs:
       - name: List file
         run: ssh mikrus 'ls -al'
         
-      - name: Show repo name
-        run: echo $REPO
+      - name: Make dir with repo name
+        run: ssh mikrus 'mkdir $REPO'
