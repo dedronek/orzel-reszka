@@ -1,10 +1,10 @@
 name: CI
-on: [push, pull_request]
+on: [push]
 jobs:
   # test:
   #   ...
   deploy:
-    name: "Deploy to staging"
+    name: "Deploy"
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     # needs: test
@@ -13,6 +13,7 @@ jobs:
         SSH_KEY: ${{ secrets.KEY }}
         SSH_HOST: ${{ secrets.HOST }}
         SSH_PORT: ${{ secrets.PORT }}
+        REPO_NAME: ${{ github.repository.name }}
     environment: mikrus
     steps:
       - name: Configure SSH
@@ -21,7 +22,7 @@ jobs:
           echo "$SSH_KEY" > ~/.ssh/staging.key
           chmod 600 ~/.ssh/staging.key
           cat >>~/.ssh/config <<END
-          Host staging
+          Host mikrus
             HostName $SSH_HOST
             User $SSH_USER
             Port $SSH_PORT
@@ -29,5 +30,8 @@ jobs:
             StrictHostKeyChecking no
           END
 
-      - name: Stop the server
-        run: ssh staging 'ls -al'
+      - name: List file
+        run: ssh mikrus 'ls -al'
+        
+      - name: Pull repo
+        run: ssh mikrus 'mkdir $REPO_NAME'
